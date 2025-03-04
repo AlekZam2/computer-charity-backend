@@ -25,6 +25,12 @@ router.post("/receive", async (req, res) => {
 
   await sendEmail(donorEmail, subject, message);
 
+  await sendEmail(
+    process.env.ADMIN_EMAIL,
+    "New Donation Received",
+    `A new donation was received from ${donorName}. Details: ${donationDetails}`
+  );
+
   res.status(200).json({
     message: "Donation request received and confirmation email sent!",
   });
