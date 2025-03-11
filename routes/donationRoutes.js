@@ -4,8 +4,41 @@ const sendEmail = require("../services/emailService");
 const router = express.Router();
 
 let donations = [];
-
-router.post("/receive", async (req, res) => {
+/**
+ * @swagger
+ * /donations:
+ *   get:
+ *     summary: Get all donations
+ *     description: Retrieve a list of all donations
+ *     responses:
+ *       200:
+ *         description: A list of donations.
+ */
+router.get("/donations", (req, res) => {
+  res.json([{ id: 1, donor: "John Doe", amount: 100 }]);
+});
+/**
+ * @swagger
+ * /donations:
+ *   post:
+ *     summary: Create a new donation
+ *     description: Add a new donation entry
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               donor:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Donation successfully created
+ */
+router.post("/donations", async (req, res) => {
   const { donorName, donorEmail, amount } = req.body;
 
   if (!donorName || !donorEmail || !amount) {
