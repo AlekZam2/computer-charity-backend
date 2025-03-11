@@ -12,6 +12,7 @@ app.use(express.json());
 
 connectDB();
 setupSwagger(app);
+app.use("/api/auth", require("./routes/auth"));
 app.use("/api/donations", donationRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the Computer Charity API!");
