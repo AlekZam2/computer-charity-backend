@@ -6,7 +6,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Register a new user
  *     description: This endpoint registers a new user, allowing them to provide basic info such as first name, last name, phone number, email, and password.
@@ -70,7 +70,7 @@ router.post(
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Log in a user
  *     description: This endpoint allows a user to log in with their email and password.
