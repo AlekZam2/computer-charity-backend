@@ -1,6 +1,6 @@
 const express = require("express");
 const { check } = require("express-validator");
-const { registerUser, loginUser } = require("../controllers/authController");
+const { register, login } = require("../controllers/authController");
 
 const router = express.Router();
 
@@ -65,7 +65,7 @@ router.post(
       .isLength({ min: 4 })
       .withMessage("Password must be 4 or more characters"),
   ],
-  registerUser
+  register
 );
 
 /**
@@ -107,7 +107,7 @@ router.post(
     check("email", "Please provide a valid email").isEmail(),
     check("password", "Password is required").exists(),
   ],
-  loginUser
+  login
 );
 
 module.exports = router;
