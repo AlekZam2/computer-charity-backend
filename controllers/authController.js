@@ -21,6 +21,8 @@ exports.register = [
       companyName,
       jobTitle,
       role,
+      address,
+      phone,
     } = req.body;
 
     try {
@@ -50,6 +52,8 @@ exports.register = [
         jobTitle: jobTitle || null,
         role: role || "donor",
         requiresPassword,
+        address: address || null,
+        phone: phone || null,
       });
 
       await newUser.save();

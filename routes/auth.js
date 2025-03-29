@@ -39,6 +39,9 @@ const router = express.Router();
  *               jobTitle:
  *                 type: string
  *                 description: The user's job title (optional, but required for corposate donors)
+ *               address:
+ *                 type: string
+ *                 description: The user's job title (optional, but required for corposate donors)
  *             required:
  *               - firstName
  *               - lastName
