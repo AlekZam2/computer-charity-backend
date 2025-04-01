@@ -1,11 +1,13 @@
 const express = require("express");
 const sendEmail = require("../services/emailService");
-const { processDonation } = require("../services/donationService");
-const Donation = require("../models/Donation");
-const Device = require("../models/Device");
+const {
+  getAllDonations,
+  createDonation,
+} = require("../controllers/donationController");
 
 const router = express.Router();
 
+let donations = [];
 /**
  * @swagger
  * /donations:
@@ -16,21 +18,13 @@ const router = express.Router();
  *       200:
  *         description: A list of donations.
  */
-router.get("/donations", async (req, res) => {
-  try {
-    const donations = await Donation.find().populate("userId");
-    res.json(donations);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
+router.get("/donations", getAllDonations);
 /**
  * @swagger
  * /donations:
  *   post:
- *     summary: Create a new donation with devices
- *     description: Creates a donation entry and links donated devices
+ *     summary: Create a donation and add devices
+ *     description: Creates a donation entry and adds devices linked to it
  *     requestBody:
  *       required: true
  *       content:
@@ -57,43 +51,8 @@ router.get("/donations", async (req, res) => {
  *                       type: string
  *     responses:
  *       201:
- *         description: Donation and devices saved successfully
+ *         description: Donation and devices created successfully
  */
-router.post("/donations", async (req, res) => {
-  try {
-    const { user, donation } = req.body;
-
-    // if ( ! || devices.length === 0) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "User ID and devices are required!" });
-    // }
-
-    // Step 1: Process the donation and devices
-    await processDonation(userId, devices);
-
-    // Step 2: Send confirmation email
-    const subject = "Donation Confirmation ✅";
-    const message = `
-      <h3>Dear ${user.firstName},</h3>
-      <p>Thank you for donating ${devices.length} device(s)!</p>
-      <p>Your generosity is making a difference.</p>
-      <p>Best Regards,<br>Computer Charity Team</p>
-    `;
-
-    await sendEmail(user.email, subject, message);
-    await sendEmail(
-      process.env.ADMIN_EMAIL,
-      "New Donation Received",
-      `User ${user.firstName} made a donation.`
-    );
-
-    res
-      .status(201)
-      .json({ message: "Donation and devices saved successfully!" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.post("/donations", createDonation);
 
 module.exports = router;
