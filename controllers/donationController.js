@@ -1,5 +1,6 @@
 const Donation = require("../models/Donation");
 const Device = require("../models/Device");
+const User = require("../models/User");
 const sendEmail = require("../services/emailService");
 
 async function sendConfirmationEmail(donorEmail, donorName, donationDetails) {
@@ -19,9 +20,9 @@ async function sendConfirmationEmail(donorEmail, donorName, donationDetails) {
 }
 async function createDonation(req, res) {
   try {
-    const { user, donation, devices } = req.body;
+    const { user, donation } = req.body;
 
-    if (!user || !devices || devices.length === 0) {
+    if (!user || donation.devices.length === 0) {
       return res
         .status(400)
         .json({ error: "User details and devices are required!" });
@@ -42,17 +43,17 @@ async function createDonation(req, res) {
     });
 
     // Step 4: Create devices linked to this donation
-    const deviceEntries = devices.map((device) => ({
+    const deviceEntries = donation.devices.map((device) => ({
       ...device,
       donationId: donation._id,
     }));
     await Device.insertMany(deviceEntries);
     await sendConfirmationEmail(
       existingUser.email,
-      existingUser.name,
+      existingUser.firstName + " " + existingUser.lastName,
       donation.donationType === "money"
         ? `£${donation.amount}`
-        : `${devices.length} devices (${devices
+        : `${donation.devices.length} devices (${donation.devices
             .map((device) => device.deviceType)
             .join(", ")})`
     );
@@ -61,7 +62,7 @@ async function createDonation(req, res) {
     res.status(201).json({
       message: "User, donation, and devices saved successfully!",
       userId: existingUser._id,
-      donationId: donation._id,
+      donationId: donationId._id,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -70,8 +71,16 @@ async function createDonation(req, res) {
 
 async function getAllDonations(req, res) {
   try {
-    const donations = await Donation.find().populate("devices");
-    res.status(200).json(donations);
+    const devicesWithDonation = await Device.find().populate({
+      path: "donationId",
+      select: "donationType userId",
+      populate: {
+        path: "userId",
+        select: "firstName lastName email companyName jobTitle phone address",
+      },
+    });
+
+    res.status(200).json(devicesWithDonation);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

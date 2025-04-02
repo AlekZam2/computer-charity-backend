@@ -17,6 +17,7 @@ const DonationSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    devices: [{ type: mongoose.Schema.Types.ObjectId, ref: "Device" }],
     status: {
       type: String,
       enum: ["Pending", "Accepted", "Declined", "Received"],
