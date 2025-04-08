@@ -14,6 +14,7 @@ connectDB();
 setupSwagger(app);
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/donations", donationRoutes);
+app.use("/api/devices", require("./routes/devicesRoutes"));
 app.get("/", (req, res) => {
   res.send("Welcome to the Computer Charity API!");
 });

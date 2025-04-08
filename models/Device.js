@@ -13,6 +13,11 @@ const DeviceSchema = new mongoose.Schema(
     age: String,
     condition: String,
     otherInformation: String,
+    status: {
+      type: String,
+      enum: ["Pending", "Accepted", "Declined", "Received"],
+      default: "Pending",
+    },
   },
   { timestamps: true }
 );

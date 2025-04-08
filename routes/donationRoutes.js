@@ -7,7 +7,6 @@ const {
 
 const router = express.Router();
 
-let donations = [];
 /**
  * @swagger
  * /donations:

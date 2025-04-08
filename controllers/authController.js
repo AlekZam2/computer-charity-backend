@@ -92,11 +92,11 @@ exports.login = [
 
       // Generate JWT token
       const token = jwt.sign(
-        { userId: user._id, role: user.role },
+        { userId: user._id, role: user.role, name: user.firstName },
         process.env.JWT_SECRET
       );
 
-      res.status(200).json({ token, user });
+      res.status(200).json({ token });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server error" });
