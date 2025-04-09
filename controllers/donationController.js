@@ -9,7 +9,7 @@ async function sendConfirmationEmail(donorEmail, donorName, donationDetails) {
     <h3>Dear ${donorName},</h3>
     <p>Thank you for your generous donation of <strong>${donationDetails}</strong>.</p>
     <p>We truly appreciate your support in helping those in need!</p>
-    <p>Best Regards,<br>Computer Charity Team</p>
+    <p>Best Regards,<br>'Tech for Diversity' Team</p>
   `;
   await sendEmail(donorEmail, subject, message);
   await sendEmail(

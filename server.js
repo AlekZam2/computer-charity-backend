@@ -2,8 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./db");
-const donationRoutes = require("./routes/donationRoutes");
 const setupSwagger = require("./swaggerConfig");
+const donationRoutes = require("./routes/donationRoutes");
+const authRoutes = require("./routes/authRoutes");
+const devicesRoutes = require("./routes/devicesRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
 dotenv.config();
@@ -12,9 +15,10 @@ app.use(express.json());
 
 connectDB();
 setupSwagger(app);
-app.use("/api/auth", require("./routes/auth"));
+app.use("/api/auth", authRoutes);
 app.use("/api/donations", donationRoutes);
-app.use("/api/devices", require("./routes/devicesRoutes"));
+app.use("/api/devices", devicesRoutes);
+app.use("/api/admin", adminRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the Computer Charity API!");
 });

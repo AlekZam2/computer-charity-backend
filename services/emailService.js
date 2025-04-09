@@ -14,16 +14,15 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, message) => {
   try {
     const mailOptions = {
-      from: `"Computer Charity" <${process.env.SMTP_USER}>`,
+      from: `"Tech for Diversity" <${process.env.SMTP_USER}>`,
       to,
       subject,
       html: message,
     };
 
     await transporter.sendMail(mailOptions);
-    console.log(`Email sent to ${to}`);
   } catch (error) {
-    console.error("❌ Error sending email:", error);
+    throw new Error("Failed to send email. Please try again later.");
   }
 };
 
