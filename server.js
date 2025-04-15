@@ -7,6 +7,7 @@ const donationRoutes = require("./routes/donationRoutes");
 const authRoutes = require("./routes/authRoutes");
 const devicesRoutes = require("./routes/devicesRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const requestsRoutes = require("./routes/requestsRoutes");
 
 const app = express();
 dotenv.config();
@@ -19,6 +20,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/donations", donationRoutes);
 app.use("/api/devices", devicesRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/requests", requestsRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to the Computer Charity API!");
 });

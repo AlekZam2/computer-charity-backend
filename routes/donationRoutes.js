@@ -13,6 +13,9 @@ const router = express.Router();
  *   get:
  *     summary: Get all donations
  *     description: Retrieve a list of all donations
+ *     tags: [Donations]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of donations.
@@ -24,6 +27,7 @@ router.get("/donations", getAllDonations);
  *   post:
  *     summary: Create a donation and add devices
  *     description: Creates a donation entry and adds devices linked to it
+ *     tags: [Donations]
  *     requestBody:
  *       required: true
  *       content:

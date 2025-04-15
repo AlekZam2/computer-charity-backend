@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 const RequestSchema = new mongoose.Schema(
   {
-    requestId: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Request",
+      ref: "User",
       required: true,
     },
+
     deviceType: { type: String, required: true },
     reason: String,
     useCase: String,

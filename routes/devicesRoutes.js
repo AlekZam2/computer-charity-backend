@@ -12,6 +12,7 @@ const authMiddleware = require("../middleware/auth");
  *   get:
  *     summary: Get all devices with related donation and user details
  *     description: Fetch all devices along with donation details and user information.
+ *     tags: [Devices]
  *     security:
  *       - BearerAuth: []
  *     responses:
@@ -30,6 +31,7 @@ router.get("/", authMiddleware, getAllDevices);
  *   put:
  *     summary: Update a device
  *     description: Update device details by ID.
+ *     tags: [Devices]
  *     security:
  *       - BearerAuth: []
  *     parameters:
