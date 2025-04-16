@@ -11,7 +11,7 @@ async function sendConfirmationEmail(
   const message = `
    <h3>Dear ${requesterName},</h3>
 
-<p>Thank you for submitting your request for a ${requestDetails} <strong>Tech for Diversity</strong>.</p>
+<p>Thank you for submitting your request for a ${requestDetails} at <strong>Tech for Diversity</strong>.</p>
 
 <p>We’ve received your application and our team will review it carefully. If we require any additional information, we’ll be in touch shortly.</p>
 

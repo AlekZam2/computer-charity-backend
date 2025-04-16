@@ -28,26 +28,36 @@ async function createDonation(req, res) {
         .json({ error: "User details and devices are required!" });
     }
 
-    // Step 1: Check if the user already exists
+    //Check if the user already exists
     let existingUser = await User.findOne({ email: user.email });
 
     if (!existingUser) {
-      // Step 2: Create a new user
+      // Create a new user
       existingUser = await User.create(user);
     }
 
-    // Step 3: Create a donation entry in the Donation collection
-    const donationId = await Donation.create({
-      ...donation,
+    // Create a donation entry in the Donation collection
+    const donationDoc = await Donation.create({
+      donationType: donation.donationType,
+      amount: donation.amount || 0,
+      status: donation.status || "Pending",
       userId: existingUser._id,
+      otherInformation: donation.otherInformation || "",
+      devices: [], // initially empty
+      amount: donation.donationType === "money" ? donation.amount : 0,
     });
 
-    // Step 4: Create devices linked to this donation
+    // Create devices linked to this donation
     const deviceEntries = donation.devices.map((device) => ({
       ...device,
-      donationId: donation._id,
+      donationId: donationDoc._id,
     }));
-    await Device.insertMany(deviceEntries);
+    const savedDevices = await Device.insertMany(deviceEntries);
+    const deviceIds = savedDevices.map((device) => device._id);
+    // Update the donation with the device IDs
+    donationDoc.devices = deviceIds;
+    await donationDoc.save();
+    // send email to the donor and admin
     await sendConfirmationEmail(
       existingUser.email,
       existingUser.firstName + " " + existingUser.lastName,
@@ -58,11 +68,11 @@ async function createDonation(req, res) {
             .join(", ")})`
     );
 
-    // Step 5: Respond with success
+    // Respond with success
     res.status(201).json({
       message: "User, donation, and devices saved successfully!",
       userId: existingUser._id,
-      donationId: donationId._id,
+      donationId: donationDoc._id,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -71,16 +81,17 @@ async function createDonation(req, res) {
 
 async function getAllDonations(req, res) {
   try {
-    const devicesWithDonation = await Device.find().populate({
-      path: "donationId",
-      select: "donationType userId",
-      populate: {
+    const donations = await Donation.find()
+      .populate({
         path: "userId",
         select: "firstName lastName email companyName jobTitle phone address",
-      },
-    });
+      })
+      .populate({
+        path: "devices",
+        select: "deviceType",
+      });
 
-    res.status(200).json(devicesWithDonation);
+    res.status(200).json(donations);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

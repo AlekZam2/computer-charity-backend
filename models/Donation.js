@@ -23,6 +23,10 @@ const DonationSchema = new mongoose.Schema(
       enum: ["Pending", "Accepted", "Declined", "Received"],
       default: "Pending",
     },
+    otherInformation: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );

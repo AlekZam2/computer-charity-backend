@@ -1,11 +1,10 @@
 const express = require("express");
-const sendEmail = require("../services/emailService");
+const router = express.Router();
 const {
   getAllDonations,
   createDonation,
 } = require("../controllers/donationController");
-
-const router = express.Router();
+const authMiddleware = require("../middleware/auth");
 
 /**
  * @swagger
@@ -20,7 +19,7 @@ const router = express.Router();
  *       200:
  *         description: A list of donations.
  */
-router.get("/donations", getAllDonations);
+router.get("/donations", authMiddleware, getAllDonations);
 /**
  * @swagger
  * /donations:

@@ -9,13 +9,14 @@ const RequestSchema = new mongoose.Schema(
     },
 
     deviceType: { type: String, required: true },
-    reason: String,
-    useCase: String,
+    reason: { String, required: true },
+    useCase: { String, required: true },
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected", "Completed"],
       default: "Pending",
     },
+    notes: { String, required: false },
   },
   { timestamps: true }
 );
