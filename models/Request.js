@@ -7,16 +7,15 @@ const RequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     deviceType: { type: String, required: true },
-    reason: { String, required: true },
-    useCase: { String, required: true },
+    reason: { type: String, required: true },
+    useCase: { type: String, required: true },
     status: {
       type: String,
       enum: ["Pending", "Approved", "Rejected", "Completed"],
       default: "Pending",
     },
-    notes: { String, required: false },
+    notes: { type: String, required: false },
   },
   { timestamps: true }
 );
